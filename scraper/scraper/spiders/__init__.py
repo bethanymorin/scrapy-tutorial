@@ -13,7 +13,7 @@ class HrTech2017(CrawlSpider):
             'scraper.pipelines.TradeShowExhibitorPipeline': 1,
             'scraper.pipelines.TradeShowExhibitorSqlitePipeline': 2,
         },
-        'CLOSESPIDER_ITEMCOUNT': 10,
+        'CLOSESPIDER_ITEMCOUNT': 5,
         'CONCURRENT_REQUESTS': 1,
         'REQUIRED_FIELDS': ['exhibitor_name', 'website_url'],
         'SQLITE_FILENAME': 'hrtech2017.db',
@@ -21,6 +21,7 @@ class HrTech2017(CrawlSpider):
             'pk': 'company_name',
             'company_name': 'exhibitor_name',
             'website': 'website_url',
+            'booth': 'booth_number',
         }
     }
 
@@ -45,4 +46,7 @@ class HrTech2017(CrawlSpider):
         contact_url_obj = html.find('a', {'id': 'BoothContactUrl'})
         if contact_url_obj:
             item['website_url'] = contact_url_obj.text
+        booth_ul = html.find('ul', {'class': 'eBoothControls'})
+        if booth_ul:
+            item['booth_number'] = booth_ul.text.strip().replace('Booth: ', '')
         yield item
