@@ -10,11 +10,18 @@ class HrTech2017(CrawlSpider):
     start_urls = ["http://s23.a2zinc.net/clients/lrp/hrtechnologyconference2017/Public/exhibitors.aspx?Index=All"]
     custom_settings = {
         'ITEM_PIPELINES': {
-            'scraper.pipelines.TradeShowExhibitorPipeline': 60,
-            'scraper.pipelines.TradeShowExhibitorSqlitePipeline': 6,
+            'scraper.pipelines.TradeShowExhibitorPipeline': 1,
+            'scraper.pipelines.TradeShowExhibitorSqlitePipeline': 2,
         },
-        'CLOSESPIDER_ITEMCOUNT': 60,
-        'CONCURRENT_REQUESTS': 6,
+        'CLOSESPIDER_ITEMCOUNT': 10,
+        'CONCURRENT_REQUESTS': 1,
+        'REQUIRED_FIELDS': ['exhibitor_name', 'website_url'],
+        'SQLITE_FILENAME': 'hrtech2017.db',
+        'SQLITE_FIELD_MAP': {
+            'pk': 'company_name',
+            'company_name': 'exhibitor_name',
+            'website': 'website_url',
+        }
     }
 
     rules = [
